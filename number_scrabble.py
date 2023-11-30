@@ -76,7 +76,7 @@ class Number_Scrabble(Game):
     def k_in_row(self, board, move, player, delta_x_y):
         """Return true if there is a line through move on board for player."""
         (delta_x, delta_y) = delta_x_y
-        x, y = move
+        x, y, num1 = move
         n = 0  # n is number of moves in row
         total = 0
         # check forward from move
@@ -84,25 +84,25 @@ class Number_Scrabble(Game):
             n += 1
             total += board[(x, y)]
             x, y = x + delta_x, y + delta_y
-        x, y = move
+        x, y, num1 = move
         # check backwards from move
         while board.get((x, y)):
             n += 1
             total += board[(x, y)]
             x, y = x - delta_x, y - delta_y
         n -= 1  # Because we counted move itself twice
-        x, y = move
+        x, y , num1= move
         total -= board.get((x, y))
         return n >= self.k and total == 15
 
 
 if __name__ == "__main__":
-    scrabble = Number_Scrabble(board=[0, 5, 3, 1])  # Creating the game instance
+    scrabble = Number_Scrabble()  # Creating the game instance
     # nim = GameOfNim(board=[7, 5, 3, 1]) # a much larger tree to search
     # print(nim.initial.board) # must be [0, 5, 3, 1]
     # print(nim.initial.moves) # must be [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (2, 1), (2, 2), (2, 3), (3, 1)]
     # print(nim.result(nim.initial, (1,3) ))
-    utility = scrabble.play_game(query_player, query_player)  # computer moves first
+    utility = scrabble.play_game(alpha_beta_player, query_player)  # computer moves first
     if utility < 0:
         print("MIN won the game")
     else:
