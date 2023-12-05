@@ -2,7 +2,7 @@ from games import *
 
 
 class Number_Scrabble(Game):
-    """Play TicTacToe on an h x v board, with Max (first player) playing 'X'.
+    """Play Number_ Scrabble on an h x v board, with Max (first player) playing 'X'.
     A state has the player to move, a cached utility, a list of moves in
     the form of a list of (x, y) positions, and a board, in the form of
     a dict of {(x, y): Player} entries, where Player is 'X' or 'O'."""
@@ -98,11 +98,8 @@ class Number_Scrabble(Game):
 
 if __name__ == "__main__":
     scrabble = Number_Scrabble()  # Creating the game instance
-    # nim = GameOfNim(board=[7, 5, 3, 1]) # a much larger tree to search
-    # print(nim.initial.board) # must be [0, 5, 3, 1]
-    # print(nim.initial.moves) # must be [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (2, 1), (2, 2), (2, 3), (3, 1)]
-    # print(nim.result(nim.initial, (1,3) ))
     utility = scrabble.play_game(alpha_beta_player, query_player)  # computer moves first
+    #utility = scrabble.play_game(query_player, query_player)
     if utility < 0:
         print("MIN won the game")
     else:
