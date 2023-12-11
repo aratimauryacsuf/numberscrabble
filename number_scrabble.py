@@ -4,8 +4,8 @@ from games import *
 class Number_Scrabble(Game):
     """Play Number_ Scrabble on an h x v board, with Max (first player) playing 'X'.
     A state has the player to move, a cached utility, a list of moves in
-    the form of a list of (x, y) positions, and a board, in the form of
-    a dict of {(x, y): Player} entries, where Player is 'X' or 'O'."""
+    the form of a list of (x, y, num) positions nad number, and a board, in the form of
+    a dict of {(x, y): num} entries, where Player is 'Min' or 'Max'."""
 
     def __init__(self, h=3, v=3, k=3):
         self.h = h
@@ -17,7 +17,7 @@ class Number_Scrabble(Game):
             for y in range(1, v + 1)
             for z in range(1, 10)
         ]
-        self.initial = GameState(to_move="X", utility=0, board={}, moves=moves)
+        self.initial = GameState(to_move="Max", utility=0, board={}, moves=moves)
 
     def actions(self, state):
         """Legal moves are any square not yet taken."""
@@ -40,7 +40,7 @@ class Number_Scrabble(Game):
                 continue
             moves.append(new_move)
         return GameState(
-            to_move=("O" if state.to_move == "X" else "X"),
+            to_move=("Min" if state.to_move == "Max" else "Max"),
             utility=self.compute_utility(board, move, state.to_move),
             board=board,
             moves=moves,
@@ -48,7 +48,7 @@ class Number_Scrabble(Game):
 
     def utility(self, state, player):
         """Return the value to player; 1 for win, -1 for loss, 0 otherwise."""
-        return state.utility if player == "X" else -state.utility
+        return state.utility if player == "Max" else -state.utility
 
     def terminal_test(self, state):
         """A state is terminal if it is won or there are no empty squares."""
@@ -62,14 +62,14 @@ class Number_Scrabble(Game):
             print()
 
     def compute_utility(self, board, move, player):
-        """If 'X' wins with this move, return 1; if 'O' wins return -1; else return 0."""
+        """If 'Max' wins with this move, return 1; if 'Min' wins return -1; else return 0."""
         if (
             self.k_in_row(board, move, player, (0, 1))
             or self.k_in_row(board, move, player, (1, 0))
             or self.k_in_row(board, move, player, (1, -1))
             or self.k_in_row(board, move, player, (1, 1))
         ):
-            return +1 if player == "X" else -1
+            return +1 if player == "Max" else -1
         else:
             return 0
 
